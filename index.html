@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="has-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>S Kale's Alphonso — Devgad & Ratnagiri Mangoes</title>
+<meta name="description" content="100% Devgad & Ratnagiri Alphonso mangoes. Naturally ripened, hand-picked, delivered across Mumbai and India. The King of Fruits, in its rarest form." />
+<link rel="icon" type="image/png" href="brand_assets/favicon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { ink:'#0b0805', ink2:'#13100a', cream:'#f2ead6', gold:'#e3a43c', goldl:'#f3c560', goldd:'#bd6f1a', purple:'#7331a6', purplel:'#9a5cc9', leaf:'#6e8b50' },
+      fontFamily: { display:['"Cormorant Garamond"','serif'], body:['"EB Garamond"','serif'], label:['"Hanken Grotesk"','sans-serif'] }
+    }}
+  };
+</script>
+
+<style>
+  :root{
+    --ink:#0b0805; --ink2:#13100a; --cream:#f2ead6; --cream-dim:rgba(242,234,214,.60);
+    --gold:#e3a43c; --gold-l:#f3c560; --gold-d:#bd6f1a; --purple:#7331a6; --purple-l:#9a5cc9; --leaf:#6e8b50;
+  }
+  *{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  html,body{ background:var(--ink); color:var(--cream); }
+  body{ font-family:'EB Garamond',serif; overflow-x:hidden; }
+  ::selection{ background:rgba(227,164,60,.30); color:#fff; }
+
+  /* Lenis */
+  html.lenis,html.lenis body{ height:auto; }
+  .lenis.lenis-smooth{ scroll-behavior:auto !important; }
+
+  .display{ font-family:'Cormorant Garamond',serif; font-weight:500; line-height:1.0; letter-spacing:-.012em; color:var(--cream);
+    text-shadow: 0 1px 0 rgba(255,248,230,.14), 0 2px 3px rgba(0,0,0,.45), 0 7px 20px rgba(0,0,0,.32); }
+  /* molten-gold foil for accent words + wordmark */
+  .display em, .foil{ font-style:italic; font-weight:400;
+    background-image:linear-gradient(176deg,#fff0c2 0%,#f3c560 38%,#e3a43c 64%,#b9690f 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+    text-shadow:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
+  .foil{ font-style:normal; }
+  .lede{ font-family:'EB Garamond',serif; color:var(--cream-dim); line-height:1.58; }
+
+  .eyebrow{ font-family:'Hanken Grotesk',sans-serif; text-transform:uppercase; letter-spacing:.34em;
+    font-size:clamp(.62rem,.82vw,.74rem); font-weight:600; color:var(--gold); display:inline-flex; align-items:center; gap:.85rem; }
+  .eyebrow::before{ content:""; width:38px; height:1px; background:linear-gradient(90deg,transparent,var(--gold)); display:inline-block; }
+  .eyebrow.center::after{ content:""; width:38px; height:1px; background:linear-gradient(90deg,var(--gold),transparent); display:inline-block; }
+
+  .hairline{ height:1px; background:linear-gradient(90deg,transparent,rgba(227,164,60,.45),transparent); }
+
+  /* buttons */
+  .btn{ font-family:'Hanken Grotesk',sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:.74rem; font-weight:600;
+    padding:1.05rem 2.1rem; border-radius:999px; display:inline-flex; align-items:center; gap:.65rem; cursor:pointer;
+    transition:transform .45s cubic-bezier(.23,1,.32,1), background .4s, color .4s, border-color .4s, box-shadow .45s; will-change:transform; }
+  .btn-primary{ background:linear-gradient(180deg,var(--gold-l),var(--gold)); color:#241405;
+    box-shadow:0 12px 34px -12px rgba(227,164,60,.55), inset 0 1px 0 rgba(255,255,255,.4); }
+  .btn-primary:hover{ transform:translateY(-3px); box-shadow:0 22px 50px -14px rgba(227,164,60,.7), inset 0 1px 0 rgba(255,255,255,.5); }
+  .btn-primary:active{ transform:translateY(-1px) scale(.985); }
+  .btn-ghost{ border:1px solid rgba(242,234,214,.26); color:var(--cream); background:rgba(242,234,214,.015); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-l); transform:translateY(-3px); }
+  .btn-ghost:active{ transform:translateY(-1px) scale(.985); }
+  .btn .arrow{ transition:transform .45s cubic-bezier(.23,1,.32,1); }
+  .btn:hover .arrow{ transform:translateX(4px); }
+  :focus-visible{ outline:2px solid var(--gold-l); outline-offset:3px; border-radius:4px; }
+
+  .link-underline{ position:relative; }
+  .link-underline::after{ content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:currentColor;
+    transform:scaleX(0); transform-origin:left; transition:transform .5s cubic-bezier(.23,1,.32,1); }
+  .link-underline:hover::after{ transform:scaleX(1); }
+
+  /* overlays */
+  .grain{ position:fixed; inset:0; z-index:90; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .vignette{ position:fixed; inset:0; z-index:80; pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 35%, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+  /* side leaves */
+  .leaf{ position:fixed; z-index:3; width:clamp(120px,15vw,250px); opacity:.5; pointer-events:none; will-change:transform; }
+  .leaf .sway{ display:block; transform-origin:50% 0%; will-change:transform; }
+  .leaf img{ display:block; width:100%; filter:drop-shadow(0 18px 24px rgba(0,0,0,.5)); }
+  .leaf.flip img{ transform:scaleX(-1); }
+
+  /* travelling mango */
+  #mango-travel{ position:fixed; top:0; left:0; width:clamp(86px,10.5vw,168px); z-index:55; pointer-events:none; will-change:transform; opacity:0; }
+  #mango-travel .bob{ display:block; will-change:transform; animation:bob 6.5s ease-in-out infinite; }
+  #mango-travel img{ display:block; width:100%; filter:drop-shadow(0 26px 38px rgba(0,0,0,.6)); }
+  @keyframes bob{ 0%,100%{ transform:translateY(-7px) rotate(-3deg); } 50%{ transform:translateY(7px) rotate(3deg); } }
+
+  /* reveal initial states (only when JS on) */
+  html.has-js [data-reveal]{ opacity:0; transform:translateY(34px); }
+  html.has-js .mask{ overflow:hidden; }
+  html.has-js .mask > span{ display:block; transform:translateY(112%); }
+
+  .quote-mark{ font-family:'Cormorant Garamond',serif; color:rgba(227,164,60,.28); font-size:7rem; line-height:.6; }
+
+  /* ribbon accent */
+  .ribbon{ position:absolute; width:2px; background:linear-gradient(180deg,transparent,var(--purple-l),var(--purple),transparent); }
+
+  .price-rule{ border-top:1px solid rgba(242,234,214,.12); }
+  .tier:hover{ background:rgba(242,234,214,.025); }
+  .tier{ transition:background .45s ease; }
+
+  html.motion-off *{ animation:none !important; transition:none !important; }
+  @media (prefers-reduced-motion:reduce){
+    #mango-travel .bob{ animation:none; }
+    html.has-js [data-reveal]{ opacity:1; transform:none; }
+    html.has-js .mask > span{ transform:none; }
+    *{ scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body class="bg-ink text-cream antialiased">
+
+<!-- atmosphere -->
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- side leaves -->
+<div class="leaf" data-leaf="0.10" style="left:-46px;  top:8vh;"  aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png" style="transform:rotate(112deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="-0.16" style="right:-50px; top:24vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-2.png" style="transform:rotate(-118deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="0.22" style="left:-54px;  top:58vh;"  aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-3.png" style="transform:rotate(74deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="-0.12" style="right:-54px; top:72vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png" style="transform:rotate(-66deg)" alt="" /></span></div>
+
+<!-- travelling mango (one of the three from the hero, detaches and drifts) -->
+<div id="mango-travel" aria-hidden="true"><span class="bob"><img src="brand_assets/mango.png" alt="" /></span></div>
+
+<!-- nav -->
+<header id="nav" class="fixed top-0 left-0 w-full z-[70] transition-all duration-500">
+  <div class="max-w-[1280px] mx-auto px-6 md:px-10 h-[78px] flex items-center justify-between">
+    <a href="#top" class="display text-cream text-[1.35rem] md:text-[1.55rem] leading-none tracking-tight">
+      S&nbsp;Kale's <span class="foil font-[400] italic">Alphonso</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <span class="eyebrow !text-cream/55 before:!hidden">Devgad · Ratnagiri</span>
+      <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-ghost !py-[.7rem] !px-[1.4rem]">Order on Instagram <span class="arrow">→</span></a>
+    </div>
+    <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="md:hidden btn btn-primary !py-[.6rem] !px-[1.2rem] !text-[.66rem]">Order</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 1 · HERO -->
+  <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 md:px-10 pt-28 pb-20 overflow-hidden">
+    <!-- the trio: one mango (#hero-lead) detaches on scroll and becomes the travelling mango -->
+    <div id="hero-cluster" class="relative mx-auto mb-4 md:mb-0 md:absolute z-[4] pointer-events-none md:right-[2vw] md:top-[16vh] w-[56vw] max-w-[240px] md:max-w-[480px] md:w-[38vw] aspect-square" aria-hidden="true">
+      <img src="brand_assets/mango.png" class="absolute w-[40%] left-0 top-[8%] -rotate-[14deg]" style="filter:drop-shadow(0 26px 32px rgba(0,0,0,.6));" alt="" />
+      <img src="brand_assets/mango-2.png" class="absolute w-[52%] right-0 top-0 rotate-[9deg]" style="filter:drop-shadow(0 26px 32px rgba(0,0,0,.6));" alt="" />
+      <img id="hero-lead" src="brand_assets/mango.png" class="absolute w-[42%] left-[30%] top-[46%] rotate-[4deg]" style="filter:drop-shadow(0 30px 40px rgba(0,0,0,.65));" alt="" />
+    </div>
+    <img src="brand_assets/ribbon.png" class="hidden md:block absolute z-[3] pointer-events-none right-[1vw] top-[10vh] w-[13vw] max-w-[200px] rotate-[6deg]" style="filter:drop-shadow(0 18px 26px rgba(0,0,0,.5));" alt="" aria-hidden="true" />
+    <div class="max-w-[1280px] mx-auto w-full relative z-[5]">
+      <p class="eyebrow mb-8" data-reveal>100% Devgad &amp; Ratnagiri · Naturally Ripened</p>
+      <h1 class="display text-[15vw] sm:text-[12vw] md:text-[8.5vw] lg:text-[7.6rem] max-w-[16ch]">
+        <span class="mask"><span>The Alphonso,</span></span>
+        <span class="mask"><span>in its <em>rarest</em> form.</span></span>
+      </h1>
+      <div class="mt-10 flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-20">
+        <p class="lede text-[1.1rem] md:text-[1.32rem] max-w-[46ch]" data-reveal>
+          Hand-picked from the orchards of the Konkan coast and ripened the way time intended &ndash; never chemicals, never rushed. The mango India saves for the people it loves.
+        </p>
+        <div class="flex items-center gap-5" data-reveal>
+          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary">Reserve Your Box <span class="arrow">→</span></a>
+          <a href="#origin" class="btn btn-ghost">The Story</a>
+        </div>
+      </div>
+    </div>
+    <a href="#manifesto" class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-3 text-cream/50 hover:text-gold transition-colors" aria-label="Scroll down">
+      <span class="eyebrow !text-current before:!hidden !tracking-[.3em]">The season is short</span>
+      <span class="w-[1px] h-12 bg-gradient-to-b from-gold/60 to-transparent animate-pulse"></span>
+    </a>
+  </section>
+
+  <!-- 2 · MANIFESTO -->
+  <section id="manifesto" class="relative py-[18vh] md:py-[24vh] px-6 md:px-10">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="space-y-2 md:space-y-4">
+        <p class="display text-[10vw] md:text-[6vw] lg:text-[5.4rem] text-cream/90" data-reveal>Sun-fed.</p>
+        <p class="display text-[10vw] md:text-[6vw] lg:text-[5.4rem] text-cream/90 md:pl-[22vw]" data-reveal>Hand-picked.</p>
+        <p class="display text-[10vw] md:text-[6vw] lg:text-[5.4rem] text-cream/90 md:pl-[10vw]" data-reveal>Naturally ripened.</p>
+        <p class="display italic text-[10vw] md:text-[6vw] lg:text-[5.4rem] text-gold md:pl-[34vw]" data-reveal>Never rushed.</p>
+      </div>
+      <p class="lede text-[1.15rem] md:text-[1.4rem] max-w-[34ch] mt-16 md:mt-24 md:ml-auto md:text-right" data-reveal>
+        Some fruit is grown. <span class="text-cream">This one is raised.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2.5 · SENSORY CUT -->
+  <section id="sensory" class="relative overflow-hidden">
+    <div class="relative w-full h-[78vh] min-h-[440px]">
+      <img src="brand_assets/mango-cut.jpg" alt="An Alphonso cut open, revealing deep saffron flesh" class="absolute inset-0 w-full h-full object-cover" data-reveal />
+      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.92) 0%, rgba(11,8,5,.55) 38%, transparent 70%);"></div>
+      <div class="absolute inset-0 flex items-center">
+        <div class="max-w-[1280px] mx-auto px-6 md:px-10 w-full">
+          <p class="eyebrow mb-6" data-reveal>One Cut Tells Everything</p>
+          <h2 class="display text-[9vw] md:text-[4.6rem] max-w-[15ch]" data-reveal>Flesh like <em>saffron silk</em> &ndash; not a thread in sight.</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · ORIGIN (tree grows on scroll behind) -->
+  <section id="origin" class="relative" style="height:260vh;">
+    <div class="sticky top-0 h-[100dvh] overflow-hidden flex items-center">
+      <canvas id="fly" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.94) 0%, rgba(11,8,5,.6) 42%, rgba(11,8,5,.12) 72%, rgba(11,8,5,.45) 100%);"></div>
+      <div class="absolute inset-x-0 bottom-0 h-1/3" style="background:linear-gradient(0deg, rgba(11,8,5,.7), transparent);"></div>
+      <div class="relative z-10 max-w-[1280px] mx-auto px-6 md:px-10 w-full">
+        <div class="max-w-[40ch]">
+          <p class="eyebrow mb-7" data-reveal>The Origin</p>
+          <h2 class="display text-[9vw] md:text-[4.4rem] lg:text-[4.8rem] mb-8" data-reveal>Two coastlines.<br/>One impossible <em>standard</em>.</h2>
+          <p class="lede text-[1.08rem] md:text-[1.22rem]" data-reveal>
+            Devgad and Ratnagiri sit on a thin ribbon of laterite soil between the Sahyadri hills and the Arabian Sea. The salt air, the iron-red earth, the long coastal sun &ndash; together they give the Alphonso a flesh so deep it glows, and a sweetness no other soil has managed to copy. This is <span class="text-cream italic">terroir</span>, the way the French mean it for wine.
+          </p>
+        </div>
+      </div>
+      <p class="absolute bottom-8 right-6 md:right-10 eyebrow !text-cream/40 before:!hidden" aria-hidden="true">Scroll to journey through Devgad</p>
+    </div>
+  </section>
+
+  <!-- 4 · WHY DIFFERENT -->
+  <section id="why" class="relative py-[16vh] px-6 md:px-10">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="max-w-[44ch] mb-20 md:mb-28">
+        <p class="eyebrow mb-6" data-reveal>The Difference</p>
+        <h2 class="display text-[9vw] md:text-[4.6rem]" data-reveal>Why a S&nbsp;Kale's mango costs what it does.</h2>
+      </div>
+
+      <div class="space-y-20 md:space-y-0">
+        <!-- 01 -->
+        <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-baseline border-t border-cream/10 pt-10 md:py-14" data-reveal>
+          <span class="display text-gold/70 text-[3rem] md:text-[3.6rem] md:col-span-2">01</span>
+          <h3 class="display text-[2.2rem] md:text-[2.8rem] md:col-span-5">Ripened by hay,<br/>not chemicals.</h3>
+          <p class="lede text-[1.05rem] md:col-span-5 md:max-w-[40ch]">Most market mangoes are force-ripened with calcium carbide. Ours rest in beds of dry grass and ripen on their own clock &ndash; the way the Konkan has done it for generations.</p>
+        </div>
+        <!-- 02 -->
+        <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-baseline border-t border-cream/10 pt-10 md:py-14" data-reveal>
+          <span class="display text-gold/70 text-[3rem] md:text-[3.6rem] md:col-span-2">02</span>
+          <h3 class="display text-[2.2rem] md:text-[2.8rem] md:col-span-5">A protected name.</h3>
+          <p class="lede text-[1.05rem] md:col-span-5 md:max-w-[40ch]">Devgad Alphonso carries a GI tag &ndash; a legal mark of origin, the same idea that protects Champagne or Darjeeling. If it isn't grown here, it simply isn't this.</p>
+        </div>
+        <!-- 03 -->
+        <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-baseline border-t border-cream/10 pt-10 md:py-14" data-reveal>
+          <span class="display text-gold/70 text-[3rem] md:text-[3.6rem] md:col-span-2">03</span>
+          <h3 class="display text-[2.2rem] md:text-[2.8rem] md:col-span-5">A harvest that ends.</h3>
+          <p class="lede text-[1.05rem] md:col-span-5 md:max-w-[40ch]">The true Alphonso runs roughly April to June. When it's over, it's over &ndash; no cold-stored imitations stretched across the year. Scarcity isn't a tactic here. It's the calendar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · RITUAL (horizontal pinned) -->
+  <section id="ritual" class="relative overflow-hidden">
+    <div class="px-6 md:px-10 pt-[14vh] pb-12 max-w-[1280px] mx-auto">
+      <p class="eyebrow mb-6" data-reveal>From Tree to Table</p>
+      <h2 class="display text-[9vw] md:text-[4.6rem] max-w-[18ch]" data-reveal>The slow ritual behind every box.</h2>
+    </div>
+    <div id="ritual-track" class="flex flex-col md:flex-row gap-10 md:gap-8 px-6 md:px-10 pb-[14vh] will-change-transform">
+      <article class="ritual-card shrink-0 w-full md:w-[44vw] lg:w-[31vw]">
+        <div class="relative aspect-[5/4] overflow-hidden rounded-[3px] mb-5" style="box-shadow:0 26px 54px -26px rgba(0,0,0,.75);">
+          <img src="brand_assets/pick.jpg" alt="A farmer hand-cutting a ripe Alphonso from the branch" class="w-full h-full object-cover" />
+          <div class="absolute inset-0" style="background:linear-gradient(0deg, rgba(11,8,5,.62), transparent 55%);"></div>
+          <span class="absolute bottom-3 left-4 foil display text-[2.6rem] leading-none">01</span>
+        </div>
+        <h3 class="display text-[1.7rem] md:text-[2rem] mb-2">Hand-picked at first blush</h3>
+        <p class="lede text-[1rem] max-w-[42ch]">Each fruit is cut by hand at the precise moment of maturity. Never shaken loose, never bruised.</p>
+      </article>
+      <article class="ritual-card shrink-0 w-full md:w-[44vw] lg:w-[31vw]">
+        <div class="relative aspect-[5/4] overflow-hidden rounded-[3px] mb-5" style="box-shadow:0 26px 54px -26px rgba(0,0,0,.75);">
+          <img src="brand_assets/ripen.jpg" alt="Alphonso mangoes ripening in dry hay in a wooden crate" class="w-full h-full object-cover" />
+          <div class="absolute inset-0" style="background:linear-gradient(0deg, rgba(11,8,5,.62), transparent 55%);"></div>
+          <span class="absolute bottom-3 left-4 foil display text-[2.6rem] leading-none">02</span>
+        </div>
+        <h3 class="display text-[1.7rem] md:text-[2rem] mb-2">Rested in hay to ripen</h3>
+        <p class="lede text-[1rem] max-w-[42ch]">Laid in dry grass, away from light, the mango ripens slowly into its full saffron self.</p>
+      </article>
+      <article class="ritual-card shrink-0 w-full md:w-[44vw] lg:w-[31vw]">
+        <div class="relative aspect-[5/4] overflow-hidden rounded-[3px] mb-5" style="box-shadow:0 26px 54px -26px rgba(0,0,0,.75);">
+          <img src="brand_assets/sort.jpg" alt="Hands grading Alphonso mangoes by hand" class="w-full h-full object-cover" />
+          <div class="absolute inset-0" style="background:linear-gradient(0deg, rgba(11,8,5,.62), transparent 55%);"></div>
+          <span class="absolute bottom-3 left-4 foil display text-[2.6rem] leading-none">03</span>
+        </div>
+        <h3 class="display text-[1.7rem] md:text-[2rem] mb-2">Sorted by hand, graded by eye</h3>
+        <p class="lede text-[1rem] max-w-[42ch]">Every mango is weighed, turned and judged. Only the ones we'd serve our own family make the box.</p>
+      </article>
+      <article class="ritual-card shrink-0 w-full md:w-[44vw] lg:w-[31vw]">
+        <div class="relative aspect-[5/4] overflow-hidden rounded-[3px] mb-5" style="box-shadow:0 26px 54px -26px rgba(0,0,0,.75);">
+          <img src="brand_assets/pack.jpg" alt="Alphonso mangoes packed in a straw-lined wooden crate" class="w-full h-full object-cover" />
+          <div class="absolute inset-0" style="background:linear-gradient(0deg, rgba(11,8,5,.62), transparent 55%);"></div>
+          <span class="absolute bottom-3 left-4 foil display text-[2.6rem] leading-none">04</span>
+        </div>
+        <h3 class="display text-[1.7rem] md:text-[2rem] mb-2">Packed with care</h3>
+        <p class="lede text-[1rem] max-w-[42ch]">Cradled in straw and a wooden crate, so it arrives exactly as it left the orchard.</p>
+      </article>
+      <article class="ritual-card shrink-0 w-full md:w-[44vw] lg:w-[31vw]">
+        <div class="relative aspect-[5/4] overflow-hidden rounded-[3px] mb-5" style="box-shadow:0 26px 54px -26px rgba(0,0,0,.75);">
+          <img src="brand_assets/gift-box.jpg" alt="A purple-ribbon gift box of Alphonso mangoes at the door" class="w-full h-full object-cover" />
+          <div class="absolute inset-0" style="background:linear-gradient(0deg, rgba(11,8,5,.62), transparent 55%);"></div>
+          <span class="absolute bottom-3 left-4 foil display text-[2.6rem] leading-none">05</span>
+        </div>
+        <h3 class="display text-[1.7rem] md:text-[2rem] mb-2">At your door</h3>
+        <p class="lede text-[1rem] max-w-[42ch]">Delivered fresh across Mumbai and shipped pan-India. Tree to table in days, not weeks.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6 · SOCIAL PROOF -->
+  <section id="proof" class="relative py-[16vh] px-6 md:px-10">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="max-w-[52ch] mb-20">
+        <p class="eyebrow mb-6" data-reveal>Trusted Where It Matters</p>
+        <p class="display text-[6vw] md:text-[3.2rem] leading-[1.12] text-cream/90" data-reveal>
+          The same orchards that fill some of India's most loved kitchens &ndash; including the makers of <span class="foil">Naturals Ice Cream</span> &ndash; fill the boxes we send to your home.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-x-10 gap-y-16">
+        <figure class="md:mt-0" data-reveal>
+          <div class="quote-mark mb-2">&ldquo;</div>
+          <blockquote class="display text-[1.7rem] md:text-[1.9rem] leading-[1.25] text-cream mb-6">Opened the box and the whole room smelled of summer. My father said it tasted like the mangoes from his village.</blockquote>
+          <figcaption class="eyebrow !text-cream/55 before:!hidden">Aishwarya R. · Mumbai</figcaption>
+        </figure>
+        <figure class="md:mt-20" data-reveal>
+          <div class="quote-mark mb-2">&ldquo;</div>
+          <blockquote class="display text-[1.7rem] md:text-[1.9rem] leading-[1.25] text-cream mb-6">I send a box to my clients every season. It's the only gift they actually remember to thank me for.</blockquote>
+          <figcaption class="eyebrow !text-cream/55 before:!hidden">Rohan M. · Pune</figcaption>
+        </figure>
+        <figure class="md:mt-8" data-reveal>
+          <div class="quote-mark mb-2">&ldquo;</div>
+          <blockquote class="display text-[1.7rem] md:text-[1.9rem] leading-[1.25] text-cream mb-6">Sweeter than anything at the market &ndash; and not a single bad fruit in the lot.</blockquote>
+          <figcaption class="eyebrow !text-cream/55 before:!hidden">Meera D. · Bengaluru</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · THE GIFT -->
+  <section id="gift" class="relative py-[16vh] px-6 md:px-10 overflow-hidden">
+    <span class="ribbon left-[8%] top-0 h-full hidden md:block" aria-hidden="true"></span>
+    <div class="max-w-[1280px] mx-auto grid md:grid-cols-2 gap-14 items-center">
+      <div>
+        <p class="eyebrow mb-6" data-reveal>The Gift of the Season</p>
+        <h2 class="display text-[10vw] md:text-[5rem] mb-8" data-reveal>Wrapped in purple.<br/>Remembered for <em>longer</em>.</h2>
+        <p class="lede text-[1.1rem] md:text-[1.25rem] max-w-[44ch] mb-10" data-reveal>
+          Each gifting box arrives in our signature dark case, tied with the purple ribbon &ndash; a quiet signal that someone chose the very best. For weddings, for housewarmings, for the people you can't thank in words.
+        </p>
+        <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary" data-reveal>Send a Gift Box <span class="arrow">→</span></a>
+      </div>
+      <div class="relative aspect-[4/5] rounded-[2px] overflow-hidden" data-reveal
+           style="box-shadow:0 40px 80px -30px rgba(0,0,0,.85);">
+        <img src="brand_assets/gift-box.jpg" alt="S Kale's Alphonso gift box tied with a purple ribbon" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · SEASON & OFFER -->
+  <section id="reserve" class="relative py-[16vh] px-6 md:px-10">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+        <div class="max-w-[30ch]">
+          <p class="eyebrow mb-6" data-reveal>Reserve the Harvest</p>
+          <h2 class="display text-[10vw] md:text-[5rem]" data-reveal>A finite harvest.<br/>Spoken for <em>quickly</em>.</h2>
+        </div>
+        <p class="lede text-[1.05rem] max-w-[34ch]" data-reveal>Season runs April to June. Booking by the dozen, with a limited number of boxes packed each day. Prices confirmed on enquiry.</p>
+      </div>
+
+      <div class="border-t border-cream/12">
+        <div class="tier price-rule grid md:grid-cols-12 gap-4 md:gap-8 items-center py-7 md:py-9 px-2 md:px-5" data-reveal>
+          <h3 class="display text-[1.9rem] md:text-[2.3rem] md:col-span-4">The Half Dozen</h3>
+          <p class="lede md:col-span-5">Six hand-picked Alphonsos. The taste, in its simplest form.</p>
+          <span class="eyebrow !text-cream/55 before:!hidden md:col-span-2 md:justify-self-end">Price on request</span>
+          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="md:col-span-1 md:justify-self-end text-gold link-underline font-label text-[.72rem] uppercase tracking-[.16em]">Book</a>
+        </div>
+        <div class="tier price-rule grid md:grid-cols-12 gap-4 md:gap-8 items-center py-7 md:py-9 px-2 md:px-5" data-reveal>
+          <h3 class="display text-[1.9rem] md:text-[2.3rem] md:col-span-4">The Signature Dozen <span class="inline-block whitespace-nowrap align-middle text-[.6rem] tracking-[.2em] uppercase font-label text-gold border border-gold/40 rounded-full px-2 py-1 ml-2">Most loved</span></h3>
+          <p class="lede md:col-span-5">Twelve graded Alphonsos in a wooden crate, packed in straw.</p>
+          <span class="eyebrow !text-cream/55 before:!hidden md:col-span-2 md:justify-self-end">Price on request</span>
+          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="md:col-span-1 md:justify-self-end text-gold link-underline font-label text-[.72rem] uppercase tracking-[.16em]">Book</a>
+        </div>
+        <div class="tier price-rule grid md:grid-cols-12 gap-4 md:gap-8 items-center py-7 md:py-9 px-2 md:px-5" data-reveal>
+          <h3 class="display text-[1.9rem] md:text-[2.3rem] md:col-span-4">The Gift Case</h3>
+          <p class="lede md:col-span-5">Twelve, presented in the purple-ribbon box. Ready to be given.</p>
+          <span class="eyebrow !text-cream/55 before:!hidden md:col-span-2 md:justify-self-end">Price on request</span>
+          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="md:col-span-1 md:justify-self-end text-gold link-underline font-label text-[.72rem] uppercase tracking-[.16em]">Book</a>
+        </div>
+        <div class="tier price-rule grid md:grid-cols-12 gap-4 md:gap-8 items-center py-7 md:py-9 px-2 md:px-5" data-reveal>
+          <h3 class="display text-[1.9rem] md:text-[2.3rem] md:col-span-4">Wholesale &amp; Bulk</h3>
+          <p class="lede md:col-span-5">For retailers, hotels and kitchens across Maharashtra and India.</p>
+          <span class="eyebrow !text-cream/55 before:!hidden md:col-span-2 md:justify-self-end">Enquire for rates</span>
+          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="md:col-span-1 md:justify-self-end text-gold link-underline font-label text-[.72rem] uppercase tracking-[.16em]">Enquire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · ORDER -->
+  <section id="order" class="relative py-[20vh] px-6 md:px-10 text-center">
+    <div class="max-w-[820px] mx-auto">
+      <p class="eyebrow center justify-center mb-8" data-reveal>Book Your Box</p>
+      <h2 class="display text-[12vw] md:text-[6.5rem] leading-[1.0] mb-10" data-reveal>Order straight<br/>from the <em>source</em>.</h2>
+      <p class="lede text-[1.15rem] md:text-[1.35rem] max-w-[48ch] mx-auto mb-12" data-reveal>
+        We take every order by hand &ndash; so each box is matched to a real person, not a warehouse. Message us to reserve, ask a question, or arrange a gift.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-5" data-reveal>
+        <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary !px-9 !py-[1.15rem]">DM&nbsp;@s.kales.mangoes <span class="arrow">→</span></a>
+        <a href="tel:+919987967062" class="btn btn-ghost">Call 99879 67062</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 10 · FOOTER -->
+<footer class="relative border-t border-cream/10 px-6 md:px-10 py-16">
+  <div class="max-w-[1280px] mx-auto grid md:grid-cols-3 gap-10 items-start">
+    <div>
+      <p class="display text-[1.7rem] leading-none">S&nbsp;Kale's <span class="foil font-[400] italic">Alphonso</span></p>
+      <p class="eyebrow !text-cream/45 before:!hidden mt-4">Devgad &amp; Ratnagiri · Naturally Ripened</p>
+    </div>
+    <div class="lede text-[1rem] leading-relaxed">
+      <p>Fresh delivery across Mumbai.<br/>Shipped pan-India.</p>
+      <p class="mt-3 text-cream/80">Season · April&ndash;June</p>
+    </div>
+    <div class="md:text-right">
+      <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="text-cream link-underline block">@s.kales.mangoes</a>
+      <a href="tel:+919987967062" class="text-cream link-underline block mt-2">+91 99879 67062</a>
+    </div>
+  </div>
+  <div class="max-w-[1280px] mx-auto mt-12 pt-6 border-t border-cream/8 flex flex-col sm:flex-row justify-between gap-3 text-cream/35 text-[.8rem] font-label tracking-wide">
+    <span>© <span id="yr"></span> S Kale's Alphonso. The King of Fruits.</span>
+    <span>Devgad · Ratnagiri · Mumbai</span>
+  </div>
+</footer>
+
+<!-- libraries -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+<script>
+(function () {
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var forceStatic = location.search.indexOf('static') > -1;   // QA hook for screenshot review
+  var hasGSAP = !!(window.gsap && window.ScrollTrigger);
+
+  // graceful fallback: if libs blocked or reduced motion, just show everything
+  if (!hasGSAP || reduce || forceStatic) {
+    document.documentElement.classList.remove('has-js');
+    if (forceStatic) document.documentElement.classList.add('motion-off');
+    var flyStatic = initFly();
+    if (flyStatic) { [400,900,1500].forEach(function(t){ setTimeout(function(){ flyStatic.draw(0.62); }, t); }); }
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- Lenis smooth scroll ---------- */
+  var lenis = new Lenis({ duration: 1.15, lerp: 0.09, smoothWheel: true,
+    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  // anchor links through Lenis
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href'); if (id.length < 2) return;
+      var el = document.querySelector(id); if (!el) return;
+      e.preventDefault(); lenis.scrollTo(el, { offset: 0 });
+    });
+  });
+
+  /* ---------- nav backdrop on scroll ---------- */
+  ScrollTrigger.create({ start: 80, onUpdate: function (self) {
+    var n = document.getElementById('nav');
+    if (self.scroll() > 80) { n.style.background = 'rgba(11,8,5,.72)'; n.style.backdropFilter = 'blur(14px)'; n.style.borderBottom = '1px solid rgba(242,234,214,.08)'; }
+    else { n.style.background = 'transparent'; n.style.backdropFilter = 'none'; n.style.borderBottom = '1px solid transparent'; }
+  }});
+
+  /* ---------- headline line masks ---------- */
+  gsap.utils.toArray('.mask').forEach(function (m) {
+    var span = m.querySelector('span');
+    gsap.to(span, { yPercent: 0, duration: 1.25, ease: 'power4.out',
+      scrollTrigger: { trigger: m, start: 'top 88%' } });
+  });
+
+  /* ---------- generic reveals ---------- */
+  ScrollTrigger.batch('[data-reveal]', { start: 'top 86%', once: true,
+    onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: 1.1, stagger: 0.09, ease: 'power3.out' }); } });
+
+  /* ---------- travelling mango: detaches from the hero trio, drifts the whole page ---------- */
+  var mango = document.getElementById('mango-travel');
+  var lead = document.getElementById('hero-lead');
+  var setM = gsap.quickSetter(mango, 'css');
+  function vw(v){ return window.innerWidth * v / 100; }
+  function vh(v){ return window.innerHeight * v / 100; }
+  var leaves = gsap.utils.toArray('.leaf');
+  var start = { x: vw(70), y: vh(30) };
+
+  function measureLead(){
+    if (!lead) return;
+    var r = lead.getBoundingClientRect();
+    start.x = r.left + r.width / 2;
+    start.y = r.top + r.height / 2;
+    mango.style.width = r.width + 'px';      // match the hero mango exactly for a seamless hand-off
+  }
+  measureLead();
+
+  function placeMango(p){
+    var driftX = Math.sin(p * Math.PI * 2.5) * vw(16);
+    var handoff = Math.min(1, p * 1.3);
+    var cx = gsap.utils.interpolate(start.x, vw(50), handoff) + driftX;
+    var cy = gsap.utils.interpolate(start.y, vh(72), p);
+    var rot = -6 + p * 64;
+    var sc = 0.92 + Math.sin(p * Math.PI) * 0.16;
+    var w = mango.offsetWidth, h = mango.offsetHeight;
+    setM({ transform: 'translate(' + (cx - w/2) + 'px,' + (cy - h/2) + 'px) rotate(' + rot + 'deg) scale(' + sc + ')',
+           opacity: Math.min(1, p / 0.04) });
+    if (lead) lead.style.opacity = String(Math.max(0, 1 - p / 0.04));
+  }
+  placeMango(0);
+
+  ScrollTrigger.create({
+    start: 0, end: 'max', scrub: true,
+    onUpdate: function (self) {
+      placeMango(self.progress);
+      var sy = self.scroll();
+      leaves.forEach(function (lf) {
+        var f = parseFloat(lf.getAttribute('data-leaf')) || 0.1;
+        gsap.set(lf, { y: sy * f * 0.12 });
+      });
+    }
+  });
+  window.addEventListener('resize', measureLead);
+
+  // gentle continuous leaf sway
+  gsap.utils.toArray('.leaf .sway').forEach(function (s, i) {
+    gsap.to(s, { rotation: i % 2 ? 5 : -5, duration: 4 + i, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  });
+
+  /* ---------- ritual: horizontal scroll (desktop) ---------- */
+  var track = document.getElementById('ritual-track');
+  if (track && window.innerWidth >= 768) {
+    var amount = function () { return track.scrollWidth - window.innerWidth + 60; };
+    gsap.to(track, { x: function () { return -amount(); }, ease: 'none',
+      scrollTrigger: { trigger: '#ritual', start: 'top top', end: function () { return '+=' + amount(); },
+        pin: true, scrub: 1, invalidateOnRefresh: true } });
+  }
+
+  /* ---------- ORIGIN: scroll-scrubbed orchard fly-through (frame sequence) ---------- */
+  var fly = initFly();
+  if (fly) {
+    ScrollTrigger.create({ trigger: '#origin', start: 'top top', end: 'bottom bottom', scrub: true,
+      onUpdate: function (self) { fly.draw(self.progress); } });
+  }
+
+  window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+})();
+
+/* ====================================================================
+   ORCHARD FLY-THROUGH  (scroll-scrubbed frame sequence, Apple-style)
+   Scroll progress p (0->1) maps to a frame; the video "plays" with scroll.
+   Frames live in brand_assets/flythrough/frame_0001.jpg ... To swap the clip,
+   re-extract frames into that folder and update FLY_COUNT.
+   ==================================================================== */
+function initFly(){
+  var FLY_COUNT = 96;
+  var canvas = document.getElementById('fly'); if (!canvas) return null;
+  var ctx = canvas.getContext('2d');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var imgs = [], firstDrawn = false;
+  for (var i = 1; i <= FLY_COUNT; i++){
+    var im = new Image();
+    im.src = 'brand_assets/flythrough/frame_' + ('000' + i).slice(-4) + '.jpg';
+    im.onload = function(){ if (!firstDrawn){ firstDrawn = true; draw(0); } };
+    imgs.push(im);
+  }
+  function size(){ var r = canvas.getBoundingClientRect(); canvas.width = Math.round(r.width*dpr); canvas.height = Math.round(r.height*dpr); }
+  function draw(p){
+    if (!canvas.width || !canvas.height) size();
+    var idx = Math.min(FLY_COUNT-1, Math.max(0, Math.round(p*(FLY_COUNT-1))));
+    var im = imgs[idx];
+    if (!im || !im.complete || !im.naturalWidth){
+      for (var j = idx; j >= 0; j--){ if (imgs[j].complete && imgs[j].naturalWidth){ im = imgs[j]; break; } }
+      if (!im || !im.naturalWidth) return;
+    }
+    var cw = canvas.width, ch = canvas.height, iw = im.naturalWidth, ih = im.naturalHeight;
+    var s = Math.max(cw/iw, ch/ih), w = iw*s, h = ih*s;
+    ctx.clearRect(0,0,cw,ch);
+    ctx.drawImage(im, (cw-w)/2, (ch-h)/2, w, h);
+  }
+  size();
+  window.addEventListener('resize', function(){ size(); if (window.__flyP!=null) draw(window.__flyP); });
+  var wrapped = function(p){ window.__flyP = p; draw(p); };
+  return { draw: wrapped, size: size };
+}
+</script>
+</body>
+</html>
