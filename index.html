@@ -517,6 +517,7 @@
   var start = { x: vw(50), y: vh(40), w: 160 };
   var ritualSide = { v: 0 };
   var landP = { v: 0 };
+  var mTarget = null, mCur = null;
 
   // pre-decode spin frames into bitmaps for buttery rotation
   var SPIN = 49, bmp = new Array(SPIN), FW = 326, FH = 342;
@@ -569,10 +570,23 @@
     }
 
     setSpin(p);
-    var w = mango.offsetWidth, h = mango.offsetHeight;
-    setM({ transform:'translate('+(cx-w/2)+'px,'+(cy-h/2)+'px) rotate('+rot+'deg) scale('+sc+')', opacity: inP });
+    mTarget = { x: cx, y: cy, sc: sc, rot: rot, op: inP };     // store target; the ticker eases toward it
+    if (!mCur) mCur = { x: cx, y: cy, sc: sc, rot: rot, op: inP };
   }
   placeMango(0);
+
+  // ease the mango toward its scroll-target every frame -> buttery glide, no snaps at the ritual or anywhere
+  gsap.ticker.add(function(){
+    if (!mTarget || !mCur) return;
+    var k = 0.13;
+    mCur.x += (mTarget.x - mCur.x) * k;
+    mCur.y += (mTarget.y - mCur.y) * k;
+    mCur.sc += (mTarget.sc - mCur.sc) * k;
+    mCur.rot += (mTarget.rot - mCur.rot) * k;
+    mCur.op += (mTarget.op - mCur.op) * k;
+    var w = mango.offsetWidth, h = mango.offsetHeight;
+    setM({ transform:'translate('+(mCur.x - w/2)+'px,'+(mCur.y - h/2)+'px) rotate('+mCur.rot+'deg) scale('+mCur.sc+')', opacity: mCur.op });
+  });
 
   ScrollTrigger.create({
     start: 0, end: 'max', scrub: true,
