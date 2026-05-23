@@ -88,13 +88,14 @@
   .leaf .sway{ display:block; transform-origin:50% 0%; will-change:transform; }
   .leaf img{ display:block; width:100%; filter:saturate(1.18) brightness(1.06) drop-shadow(0 16px 22px rgba(0,0,0,.45)); }
 
-  /* travelling mango (rotating frame-sprite) */
-  #mango-travel{ position:fixed; top:0; left:0; width:clamp(120px,13vw,210px); z-index:55; pointer-events:none; will-change:transform; opacity:0; }
+  /* travelling mango (canvas rotating sprite) */
+  #mango-travel{ position:fixed; top:0; left:0; width:clamp(150px,17vw,280px); z-index:55; pointer-events:none; will-change:transform; opacity:0; }
   #mango-travel .bob{ display:block; will-change:transform; animation:bob 6.5s ease-in-out infinite; }
-  #mango-travel img{ display:block; width:100%; filter:drop-shadow(0 26px 38px rgba(0,0,0,.6)); }
+  #mango-travel canvas{ display:block; width:100%; height:auto; filter:drop-shadow(0 26px 40px rgba(0,0,0,.6)); }
   @keyframes bob{ 0%,100%{ transform:translateY(-6px); } 50%{ transform:translateY(6px); } }
 
   /* reveal initial states (only when JS on) */
+  .mask{ display:block; padding-block:.06em; }   /* block line + breathing room (prevents the lede overlapping the headline) */
   html.has-js [data-reveal]{ opacity:0; transform:translateY(34px); }
   html.has-js .mask{ overflow:hidden; }
   html.has-js .mask > span{ display:block; transform:translateY(112%); }
@@ -133,8 +134,8 @@
 <div class="leaf" data-leaf="-0.30" data-rot="16" style="right:-58px; top:78vh; width:clamp(160px,18vw,300px);" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-3.png" style="transform:rotate(-98deg)" alt="" /></span></div>
 <div class="leaf" data-leaf="0.24" data-rot="-14" style="left:-66px;  top:86vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png"   style="transform:rotate(104deg)" alt="" /></span></div>
 
-<!-- travelling mango: rotating frame-sprite that lifts off the hero trio and drifts the page -->
-<div id="mango-travel" aria-hidden="true"><span class="bob"><img id="mango-img" src="brand_assets/mango_spin/frame_0001.png" alt="" /></span></div>
+<!-- travelling mango: canvas-drawn rotating sprite that lifts off the hero trio and drifts the page -->
+<div id="mango-travel" aria-hidden="true"><span class="bob"><canvas id="mango-canvas"></canvas></span></div>
 
 <!-- nav -->
 <header id="nav" class="fixed top-0 left-0 w-full z-[70] transition-all duration-500">
@@ -162,11 +163,8 @@
       <img id="hero-lead" src="brand_assets/mango.png" class="absolute w-[40%] left-[31%] top-[44%] rotate-[3deg]" style="filter:drop-shadow(0 30px 40px rgba(0,0,0,.65));" alt="" />
     </div>
     <p class="eyebrow center justify-center mb-6" data-reveal>100% Devgad &amp; Ratnagiri · Naturally Ripened</p>
-    <h1 class="display mx-auto text-[11.5vw] md:text-[6.2vw] lg:text-[5.8rem] leading-[0.98] max-w-[20ch]">
-      <span class="mask"><span>The Alphonso,</span></span>
-      <span class="mask"><span>in its <em>rarest</em> form.</span></span>
-    </h1>
-    <p class="lede text-[1.05rem] md:text-[1.22rem] max-w-[50ch] mx-auto mt-7" data-reveal>
+    <h1 class="display mx-auto text-[10.5vw] md:text-[5.6vw] lg:text-[5.2rem] leading-[1.12] max-w-[18ch]" data-reveal>The Alphonso, in its <em>rarest</em> form.</h1>
+    <p class="lede text-[1.05rem] md:text-[1.22rem] max-w-[50ch] mx-auto mt-10" data-reveal>
       Hand-picked from the orchards of the Konkan coast, ripened the way time intended. Never chemicals, never rushed.
     </p>
     <div class="flex flex-col sm:flex-row items-center justify-center gap-5 mt-9" data-reveal>
@@ -418,7 +416,7 @@
         <a href="tel:+919987967062" class="btn btn-ghost">Call 99879 67062</a>
       </div>
       <!-- the travelling mango lands here at the end of the scroll -->
-      <div class="relative mx-auto mt-20 md:mt-24 w-[80vw] max-w-[440px]" data-reveal>
+      <div class="relative mx-auto mt-20 md:mt-24 w-[88vw] max-w-[600px]">
         <img id="gift-landing" src="brand_assets/gift-open.png" alt="An open gift box of Alphonso mangoes tied with a purple ribbon" class="w-full" style="filter:drop-shadow(0 44px 64px rgba(0,0,0,.72));" />
       </div>
     </div>
@@ -505,9 +503,10 @@
   ScrollTrigger.batch('[data-reveal]', { start: 'top 86%', once: true,
     onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: 1.1, stagger: 0.09, ease: 'power3.out' }); } });
 
-  /* ---------- rotating travelling mango: lifts off the trio, spins, drifts wide, lands in the gift box ---------- */
+  /* ---------- rotating travelling mango (canvas, pre-decoded frames = smooth) ---------- */
   var mango = document.getElementById('mango-travel');
-  var mangoImg = document.getElementById('mango-img');
+  var canvas = document.getElementById('mango-canvas');
+  var ctx = canvas.getContext('2d');
   var lead = document.getElementById('hero-lead');
   var giftBox = document.getElementById('gift-landing');
   var setM = gsap.quickSetter(mango, 'css');
@@ -517,44 +516,55 @@
   var leaves = gsap.utils.toArray('.leaf');
   var start = { x: vw(50), y: vh(40), w: 160 };
   var ritualSide = { v: 0 };
+  var landP = { v: 0 };
 
-  // preload spin frames for true 3D rotation
-  var SPIN = 49, spin = [];
-  for (var s = 1; s <= SPIN; s++){ var im = new Image(); im.src = 'brand_assets/mango_spin/frame_' + ('000'+s).slice(-4) + '.png'; spin.push(im); }
+  // pre-decode spin frames into bitmaps for buttery rotation
+  var SPIN = 49, bmp = new Array(SPIN), FW = 326, FH = 342;
+  canvas.width = 600; canvas.height = Math.round(600 * FH / FW);
+  function drawSpin(idx){
+    var b = bmp[idx];
+    if (!b){ for (var j = idx; j >= 0; j--){ if (bmp[j]){ b = bmp[j]; break; } } if (!b) return; }
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(b, 0, 0, canvas.width, canvas.height);
+  }
+  for (var s = 1; s <= SPIN; s++){ (function(i){
+    var im = new Image();
+    im.onload = function(){ createImageBitmap(im).then(function(b){ bmp[i-1] = b; if (i === 1) drawSpin(0); })
+      .catch(function(){ bmp[i-1] = im; if (i === 1) drawSpin(0); }); };
+    im.src = 'brand_assets/mango_spin/frame_' + ('000'+i).slice(-4) + '.png';
+  })(s); }
   var lastSpin = -1;
   function setSpin(p){
-    var idx = Math.floor((((p * 2.6) % 1) + 1) % 1 * SPIN) % SPIN;   // ~2.6 turns over the page (lively)
-    if (idx === lastSpin) return;
-    var f = spin[idx];
-    if (f && f.complete && f.naturalWidth){ mangoImg.src = f.src; lastSpin = idx; }
+    var idx = Math.floor((((p * 2.4) % 1) + 1) % 1 * SPIN) % SPIN;   // ~2.4 smooth turns over the page
+    if (idx === lastSpin) return; lastSpin = idx; drawSpin(idx);
   }
 
   function measureLead(){
     if (!lead) return;
     var r = lead.getBoundingClientRect();
     start.x = r.left + r.width/2; start.y = r.top + r.height/2; start.w = r.width;
-    mango.style.width = (r.width * 1.05) + 'px';
+    mango.style.width = r.width + 'px';     // match the hero mango for a seamless hand-off (scale grows it later)
   }
   measureLead();
 
   function placeMango(p){
-    var inP = smooth(0.004, 0.05, p);                 // mango fades in as it lifts off
-    if (lead) lead.style.opacity = String(1 - smooth(0.004, 0.045, p));
-    var driftX = Math.sin(p * Math.PI * 4) * vw(26);  // wider, more frequent left-right swing
-    var baseX = gsap.utils.interpolate(start.x, vw(50) + driftX, Math.min(1, p * 1.25));
-    var baseY = gsap.utils.interpolate(start.y, vh(56), p);
-    var rot = -5 + Math.sin(p * Math.PI * 3) * 7;     // gentle tilt; the spin frames carry the real rotation
-    var sc  = 0.95 + Math.sin(p * Math.PI) * 0.14;
+    var inP = smooth(0.006, 0.06, p);
+    if (lead) lead.style.opacity = String(1 - smooth(0.006, 0.05, p));
+    var driftX = Math.sin(p * Math.PI * 4) * vw(27);                 // wide left-right swing
+    var baseX = gsap.utils.interpolate(start.x, vw(50) + driftX, Math.min(1, p * 1.2));
+    var baseY = gsap.utils.interpolate(start.y, vh(55), p);
+    var rot   = Math.sin(p * Math.PI * 3) * 10;                      // left-right axis tilt while spinning
+    var sc    = 1.0 + Math.sin(p * Math.PI) * 0.5;                   // grows big mid-journey, settles at the ends
 
-    var cx = gsap.utils.interpolate(baseX, vw(89), ritualSide.v);  // pushed to the right edge during ritual
+    var cx = gsap.utils.interpolate(baseX, vw(83), ritualSide.v);    // eased aside during ritual
     var cy = baseY;
 
-    if (giftBox && p > 0.86){                          // settle into the open gift box at the very end
-      var land = smooth(0.86, 0.995, p);
+    if (giftBox && landP.v > 0.001){                                 // glue into the open box's straw opening
+      var land = landP.v;
       var gr = giftBox.getBoundingClientRect();
-      cx  = gsap.utils.interpolate(cx, gr.left + gr.width*0.5, land);
-      cy  = gsap.utils.interpolate(cy, gr.top + gr.height*0.30, land);
-      sc  = gsap.utils.interpolate(sc, 0.6, land);
+      cx  = gsap.utils.interpolate(cx, gr.left + gr.width*0.33, land);
+      cy  = gsap.utils.interpolate(cy, gr.top + gr.height*0.20, land);
+      sc  = gsap.utils.interpolate(sc, (gr.width * 0.22) / Math.max(1, mango.offsetWidth), land);
       rot = gsap.utils.interpolate(rot, 0, land);
     }
 
@@ -591,8 +601,14 @@
     gsap.to(track, { x: function () { return -amount(); }, ease: 'none',
       scrollTrigger: { trigger: '#ritual', start: 'top top', end: function () { return '+=' + amount(); },
         pin: true, scrub: 1, invalidateOnRefresh: true,
-        onUpdate: function (self){ var p = self.progress; ritualSide.v = Math.min(1, Math.min(p/0.12, (1-p)/0.12, 1)); },
+        onUpdate: function (self){ var p = self.progress; ritualSide.v = Math.min(smooth(0,0.32,p), smooth(0,0.32,1-p)); },
         onLeave: function(){ ritualSide.v = 0; }, onLeaveBack: function(){ ritualSide.v = 0; } } });
+  }
+
+  /* ---------- gift-box landing: mango glues into the box as it centres ---------- */
+  if (giftBox){
+    ScrollTrigger.create({ trigger: giftBox, start: 'top 78%', end: 'center 56%',
+      onUpdate: function (self){ landP.v = self.progress; } });
   }
 
   /* ---------- ORIGIN: fly-through + copy emerges on scroll ---------- */
