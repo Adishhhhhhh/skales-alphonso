@@ -35,13 +35,18 @@
   html.lenis,html.lenis body{ height:auto; }
   .lenis.lenis-smooth{ scroll-behavior:auto !important; }
 
+  /* embossed, dimensional cream type: top light edge + bottom dark edge + depth (keeps child colors) */
   .display{ font-family:'Cormorant Garamond',serif; font-weight:500; line-height:1.0; letter-spacing:-.012em; color:var(--cream);
-    text-shadow: 0 1px 0 rgba(255,248,230,.14), 0 2px 3px rgba(0,0,0,.45), 0 7px 20px rgba(0,0,0,.32); }
+    text-shadow:
+      0 1px 0 rgba(255,250,235,.30),
+      0 -1px 0 rgba(0,0,0,.22),
+      0 2px 4px rgba(0,0,0,.55),
+      0 12px 30px rgba(0,0,0,.42); }
   /* molten-gold foil for accent words + wordmark */
   .display em, .foil{ font-style:italic; font-weight:400;
-    background-image:linear-gradient(176deg,#fff0c2 0%,#f3c560 38%,#e3a43c 64%,#b9690f 100%);
+    background-image:linear-gradient(175deg,#fff3cf 0%,#ffd970 30%,#f0b53e 56%,#d98a1e 78%,#a85e0c 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
-    text-shadow:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
+    filter:drop-shadow(0 1px 0 rgba(255,240,200,.35)) drop-shadow(0 2px 3px rgba(0,0,0,.55)); }
   .foil{ font-style:normal; }
   .lede{ font-family:'EB Garamond',serif; color:var(--cream-dim); line-height:1.58; }
 
@@ -78,22 +83,22 @@
   .vignette{ position:fixed; inset:0; z-index:80; pointer-events:none;
     background:radial-gradient(120% 90% at 50% 35%, transparent 55%, rgba(0,0,0,.55) 100%); }
 
-  /* side leaves */
-  .leaf{ position:fixed; z-index:3; width:clamp(120px,15vw,250px); opacity:.5; pointer-events:none; will-change:transform; }
+  /* side leaves (parallax layers) */
+  .leaf{ position:fixed; z-index:3; width:clamp(120px,15vw,250px); opacity:.62; pointer-events:none; will-change:transform; }
   .leaf .sway{ display:block; transform-origin:50% 0%; will-change:transform; }
-  .leaf img{ display:block; width:100%; filter:drop-shadow(0 18px 24px rgba(0,0,0,.5)); }
-  .leaf.flip img{ transform:scaleX(-1); }
+  .leaf img{ display:block; width:100%; filter:saturate(1.18) brightness(1.06) drop-shadow(0 16px 22px rgba(0,0,0,.45)); }
 
-  /* travelling mango */
-  #mango-travel{ position:fixed; top:0; left:0; width:clamp(86px,10.5vw,168px); z-index:55; pointer-events:none; will-change:transform; opacity:0; }
+  /* travelling mango (rotating frame-sprite) */
+  #mango-travel{ position:fixed; top:0; left:0; width:clamp(120px,13vw,210px); z-index:55; pointer-events:none; will-change:transform; opacity:0; }
   #mango-travel .bob{ display:block; will-change:transform; animation:bob 6.5s ease-in-out infinite; }
   #mango-travel img{ display:block; width:100%; filter:drop-shadow(0 26px 38px rgba(0,0,0,.6)); }
-  @keyframes bob{ 0%,100%{ transform:translateY(-7px) rotate(-3deg); } 50%{ transform:translateY(7px) rotate(3deg); } }
+  @keyframes bob{ 0%,100%{ transform:translateY(-6px); } 50%{ transform:translateY(6px); } }
 
   /* reveal initial states (only when JS on) */
   html.has-js [data-reveal]{ opacity:0; transform:translateY(34px); }
   html.has-js .mask{ overflow:hidden; }
   html.has-js .mask > span{ display:block; transform:translateY(112%); }
+  html.has-js #origin-copy{ opacity:0; }   /* emerges on scroll via JS */
 
   .quote-mark{ font-family:'Cormorant Garamond',serif; color:rgba(227,164,60,.28); font-size:7rem; line-height:.6; }
 
@@ -119,14 +124,17 @@
 <div class="grain" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>
 
-<!-- side leaves -->
-<div class="leaf" data-leaf="0.10" style="left:-46px;  top:8vh;"  aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png" style="transform:rotate(112deg)" alt="" /></span></div>
-<div class="leaf" data-leaf="-0.16" style="right:-50px; top:24vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-2.png" style="transform:rotate(-118deg)" alt="" /></span></div>
-<div class="leaf" data-leaf="0.22" style="left:-54px;  top:58vh;"  aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-3.png" style="transform:rotate(74deg)" alt="" /></span></div>
-<div class="leaf" data-leaf="-0.12" style="right:-54px; top:72vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png" style="transform:rotate(-66deg)" alt="" /></span></div>
+<!-- side leaves (Redis-style parallax layers; data-leaf = parallax speed, data-rot = scroll rotation) -->
+<div class="leaf" data-leaf="0.14" data-rot="-10" style="left:-64px;  top:5vh;  width:clamp(150px,17vw,290px);" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png"   style="transform:rotate(118deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="-0.22" data-rot="14" style="right:-70px; top:15vh; width:clamp(160px,18vw,310px);" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-2.png" style="transform:rotate(-122deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="0.30" data-rot="-16" style="left:-58px;  top:30vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-3.png" style="transform:rotate(96deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="0.18" data-rot="10" style="left:-72px;  top:55vh; width:clamp(150px,17vw,290px);" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-2.png" style="transform:rotate(74deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="-0.16" data-rot="-12" style="right:-66px; top:48vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png"   style="transform:rotate(-70deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="-0.30" data-rot="16" style="right:-58px; top:78vh; width:clamp(160px,18vw,300px);" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf-3.png" style="transform:rotate(-98deg)" alt="" /></span></div>
+<div class="leaf" data-leaf="0.24" data-rot="-14" style="left:-66px;  top:86vh;" aria-hidden="true"><span class="sway"><img src="brand_assets/leaf.png"   style="transform:rotate(104deg)" alt="" /></span></div>
 
-<!-- travelling mango (one of the three from the hero, detaches and drifts) -->
-<div id="mango-travel" aria-hidden="true"><span class="bob"><img src="brand_assets/mango.png" alt="" /></span></div>
+<!-- travelling mango: rotating frame-sprite that lifts off the hero trio and drifts the page -->
+<div id="mango-travel" aria-hidden="true"><span class="bob"><img id="mango-img" src="brand_assets/mango_spin/frame_0001.png" alt="" /></span></div>
 
 <!-- nav -->
 <header id="nav" class="fixed top-0 left-0 w-full z-[70] transition-all duration-500">
@@ -145,31 +153,27 @@
 <main id="top">
 
   <!-- 1 · HERO -->
-  <section class="relative min-h-[100dvh] flex flex-col justify-center px-6 md:px-10 pt-28 pb-20 overflow-hidden">
-    <!-- the trio: one mango (#hero-lead) detaches on scroll and becomes the travelling mango -->
-    <div id="hero-cluster" class="relative mx-auto mb-4 md:mb-0 md:absolute z-[4] pointer-events-none md:right-[2vw] md:top-[16vh] w-[56vw] max-w-[240px] md:max-w-[480px] md:w-[38vw] aspect-square" aria-hidden="true">
-      <img src="brand_assets/mango.png" class="absolute w-[40%] left-0 top-[8%] -rotate-[14deg]" style="filter:drop-shadow(0 26px 32px rgba(0,0,0,.6));" alt="" />
-      <img src="brand_assets/mango-2.png" class="absolute w-[52%] right-0 top-0 rotate-[9deg]" style="filter:drop-shadow(0 26px 32px rgba(0,0,0,.6));" alt="" />
-      <img id="hero-lead" src="brand_assets/mango.png" class="absolute w-[42%] left-[30%] top-[46%] rotate-[4deg]" style="filter:drop-shadow(0 30px 40px rgba(0,0,0,.65));" alt="" />
+  <section id="hero" class="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 md:px-10 pt-24 pb-24 overflow-hidden">
+    <!-- trio (top-centre): #hero-lead lifts off on scroll into the travelling mango -->
+    <div id="hero-cluster" class="relative pointer-events-none w-[74vw] max-w-[290px] md:max-w-[380px] aspect-[6/5] mb-3 md:mb-5" aria-hidden="true">
+      <img src="brand_assets/ribbon.png" class="absolute w-[42%] right-[-5%] top-[-16%] rotate-[10deg]" style="filter:drop-shadow(0 14px 20px rgba(0,0,0,.5));" alt="" />
+      <img src="brand_assets/mango.png" class="absolute w-[38%] left-[3%] top-[20%] -rotate-[15deg]" style="filter:drop-shadow(0 24px 30px rgba(0,0,0,.6));" alt="" />
+      <img src="brand_assets/mango-2.png" class="absolute w-[48%] right-[1%] top-[6%] rotate-[8deg]" style="filter:drop-shadow(0 24px 30px rgba(0,0,0,.6));" alt="" />
+      <img id="hero-lead" src="brand_assets/mango.png" class="absolute w-[40%] left-[31%] top-[44%] rotate-[3deg]" style="filter:drop-shadow(0 30px 40px rgba(0,0,0,.65));" alt="" />
     </div>
-    <img src="brand_assets/ribbon.png" class="hidden md:block absolute z-[3] pointer-events-none right-[1vw] top-[10vh] w-[13vw] max-w-[200px] rotate-[6deg]" style="filter:drop-shadow(0 18px 26px rgba(0,0,0,.5));" alt="" aria-hidden="true" />
-    <div class="max-w-[1280px] mx-auto w-full relative z-[5]">
-      <p class="eyebrow mb-8" data-reveal>100% Devgad &amp; Ratnagiri · Naturally Ripened</p>
-      <h1 class="display text-[15vw] sm:text-[12vw] md:text-[8.5vw] lg:text-[7.6rem] max-w-[16ch]">
-        <span class="mask"><span>The Alphonso,</span></span>
-        <span class="mask"><span>in its <em>rarest</em> form.</span></span>
-      </h1>
-      <div class="mt-10 flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-20">
-        <p class="lede text-[1.1rem] md:text-[1.32rem] max-w-[46ch]" data-reveal>
-          Hand-picked from the orchards of the Konkan coast and ripened the way time intended &ndash; never chemicals, never rushed. The mango India saves for the people it loves.
-        </p>
-        <div class="flex items-center gap-5" data-reveal>
-          <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary">Reserve Your Box <span class="arrow">→</span></a>
-          <a href="#origin" class="btn btn-ghost">The Story</a>
-        </div>
-      </div>
+    <p class="eyebrow center justify-center mb-6" data-reveal>100% Devgad &amp; Ratnagiri · Naturally Ripened</p>
+    <h1 class="display mx-auto text-[11.5vw] md:text-[6.2vw] lg:text-[5.8rem] leading-[0.98] max-w-[20ch]">
+      <span class="mask"><span>The Alphonso,</span></span>
+      <span class="mask"><span>in its <em>rarest</em> form.</span></span>
+    </h1>
+    <p class="lede text-[1.05rem] md:text-[1.22rem] max-w-[50ch] mx-auto mt-7" data-reveal>
+      Hand-picked from the orchards of the Konkan coast, ripened the way time intended. Never chemicals, never rushed.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-5 mt-9" data-reveal>
+      <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary">Reserve Your Box <span class="arrow">→</span></a>
+      <a href="#origin" class="btn btn-ghost">The Story</a>
     </div>
-    <a href="#manifesto" class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-3 text-cream/50 hover:text-gold transition-colors" aria-label="Scroll down">
+    <a href="#manifesto" class="absolute bottom-7 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-3 text-cream/50 hover:text-gold transition-colors" aria-label="Scroll down">
       <span class="eyebrow !text-current before:!hidden !tracking-[.3em]">The season is short</span>
       <span class="w-[1px] h-12 bg-gradient-to-b from-gold/60 to-transparent animate-pulse"></span>
     </a>
@@ -192,13 +196,15 @@
 
   <!-- 2.5 · SENSORY CUT -->
   <section id="sensory" class="relative overflow-hidden">
-    <div class="relative w-full h-[78vh] min-h-[440px]">
-      <img src="brand_assets/mango-cut.jpg" alt="An Alphonso cut open, revealing deep saffron flesh" class="absolute inset-0 w-full h-full object-cover" data-reveal />
-      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.92) 0%, rgba(11,8,5,.55) 38%, transparent 70%);"></div>
+    <div class="relative w-full h-[82vh] min-h-[460px]">
+      <img src="brand_assets/mango-cut.jpg" alt="An Alphonso cut open, revealing deep saffron flesh" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.94) 0%, rgba(11,8,5,.58) 38%, transparent 72%);"></div>
+      <div class="absolute inset-x-0 top-0 h-32 md:h-52" style="background:linear-gradient(180deg, var(--ink), transparent);"></div>
+      <div class="absolute inset-x-0 bottom-0 h-32 md:h-52" style="background:linear-gradient(0deg, var(--ink), transparent);"></div>
       <div class="absolute inset-0 flex items-center">
         <div class="max-w-[1280px] mx-auto px-6 md:px-10 w-full">
           <p class="eyebrow mb-6" data-reveal>One Cut Tells Everything</p>
-          <h2 class="display text-[9vw] md:text-[4.6rem] max-w-[15ch]" data-reveal>Flesh like <em>saffron silk</em> &ndash; not a thread in sight.</h2>
+          <h2 class="display text-[9vw] md:text-[4.4rem] max-w-[20ch]" data-reveal>Flesh like <em>saffron silk</em>. Not a thread in sight.</h2>
         </div>
       </div>
     </div>
@@ -208,14 +214,15 @@
   <section id="origin" class="relative" style="height:260vh;">
     <div class="sticky top-0 h-[100dvh] overflow-hidden flex items-center">
       <canvas id="fly" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
-      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.94) 0%, rgba(11,8,5,.6) 42%, rgba(11,8,5,.12) 72%, rgba(11,8,5,.45) 100%);"></div>
-      <div class="absolute inset-x-0 bottom-0 h-1/3" style="background:linear-gradient(0deg, rgba(11,8,5,.7), transparent);"></div>
-      <div class="relative z-10 max-w-[1280px] mx-auto px-6 md:px-10 w-full">
-        <div class="max-w-[40ch]">
-          <p class="eyebrow mb-7" data-reveal>The Origin</p>
-          <h2 class="display text-[9vw] md:text-[4.4rem] lg:text-[4.8rem] mb-8" data-reveal>Two coastlines.<br/>One impossible <em>standard</em>.</h2>
-          <p class="lede text-[1.08rem] md:text-[1.22rem]" data-reveal>
-            Devgad and Ratnagiri sit on a thin ribbon of laterite soil between the Sahyadri hills and the Arabian Sea. The salt air, the iron-red earth, the long coastal sun &ndash; together they give the Alphonso a flesh so deep it glows, and a sweetness no other soil has managed to copy. This is <span class="text-cream italic">terroir</span>, the way the French mean it for wine.
+      <div class="absolute inset-0" style="background:linear-gradient(90deg, rgba(11,8,5,.95) 0%, rgba(11,8,5,.62) 42%, rgba(11,8,5,.14) 72%, rgba(11,8,5,.5) 100%);"></div>
+      <div class="absolute inset-x-0 top-0 h-40" style="background:linear-gradient(180deg, var(--ink), transparent);"></div>
+      <div class="absolute inset-x-0 bottom-0 h-40" style="background:linear-gradient(0deg, var(--ink), transparent);"></div>
+      <div id="origin-copy" class="relative z-10 max-w-[1280px] mx-auto px-6 md:px-10 w-full">
+        <div class="max-w-[34ch]">
+          <p class="eyebrow mb-6">The Origin</p>
+          <h2 class="display text-[8.5vw] md:text-[3.8rem] lg:text-[4.2rem] leading-[1.05] mb-6 max-w-[16ch]">Two coastlines, one impossible <em>standard</em>.</h2>
+          <p class="lede text-[1.05rem] md:text-[1.18rem] max-w-[46ch]">
+            A thin ribbon of laterite soil between the Sahyadri hills and the Arabian Sea. Sun, salt air and iron-red earth give the Alphonso a flesh so deep it glows. This is <span class="text-cream italic">terroir</span>, the way the French mean it for wine.
           </p>
         </div>
       </div>
@@ -228,7 +235,7 @@
     <div class="max-w-[1280px] mx-auto">
       <div class="max-w-[44ch] mb-20 md:mb-28">
         <p class="eyebrow mb-6" data-reveal>The Difference</p>
-        <h2 class="display text-[9vw] md:text-[4.6rem]" data-reveal>Why a S&nbsp;Kale's mango costs what it does.</h2>
+        <h2 class="display text-[9vw] md:text-[4.6rem] max-w-[16ch]" data-reveal>Why it costs what it does.</h2>
       </div>
 
       <div class="space-y-20 md:space-y-0">
@@ -364,7 +371,7 @@
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
         <div class="max-w-[30ch]">
           <p class="eyebrow mb-6" data-reveal>Reserve the Harvest</p>
-          <h2 class="display text-[10vw] md:text-[5rem]" data-reveal>A finite harvest.<br/>Spoken for <em>quickly</em>.</h2>
+          <h2 class="display text-[10vw] md:text-[4.6rem] max-w-[15ch]" data-reveal>A finite harvest, spoken for <em>quickly</em>.</h2>
         </div>
         <p class="lede text-[1.05rem] max-w-[34ch]" data-reveal>Season runs April to June. Booking by the dozen, with a limited number of boxes packed each day. Prices confirmed on enquiry.</p>
       </div>
@@ -409,6 +416,10 @@
       <div class="flex flex-col sm:flex-row items-center justify-center gap-5" data-reveal>
         <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary !px-9 !py-[1.15rem]">DM&nbsp;@s.kales.mangoes <span class="arrow">→</span></a>
         <a href="tel:+919987967062" class="btn btn-ghost">Call 99879 67062</a>
+      </div>
+      <!-- the travelling mango lands here at the end of the scroll -->
+      <div class="relative mx-auto mt-20 md:mt-24 w-[80vw] max-w-[440px]" data-reveal>
+        <img id="gift-landing" src="brand_assets/gift-open.png" alt="An open gift box of Alphonso mangoes tied with a purple ribbon" class="w-full" style="filter:drop-shadow(0 44px 64px rgba(0,0,0,.72));" />
       </div>
     </div>
   </section>
@@ -494,71 +505,109 @@
   ScrollTrigger.batch('[data-reveal]', { start: 'top 86%', once: true,
     onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: 1.1, stagger: 0.09, ease: 'power3.out' }); } });
 
-  /* ---------- travelling mango: detaches from the hero trio, drifts the whole page ---------- */
+  /* ---------- rotating travelling mango: lifts off the trio, spins, drifts wide, lands in the gift box ---------- */
   var mango = document.getElementById('mango-travel');
+  var mangoImg = document.getElementById('mango-img');
   var lead = document.getElementById('hero-lead');
+  var giftBox = document.getElementById('gift-landing');
   var setM = gsap.quickSetter(mango, 'css');
   function vw(v){ return window.innerWidth * v / 100; }
   function vh(v){ return window.innerHeight * v / 100; }
+  function smooth(a,b,t){ t = Math.max(0, Math.min(1,(t-a)/(b-a))); return t*t*(3-2*t); }
   var leaves = gsap.utils.toArray('.leaf');
-  var start = { x: vw(70), y: vh(30) };
+  var start = { x: vw(50), y: vh(40), w: 160 };
+  var ritualSide = { v: 0 };
+
+  // preload spin frames for true 3D rotation
+  var SPIN = 49, spin = [];
+  for (var s = 1; s <= SPIN; s++){ var im = new Image(); im.src = 'brand_assets/mango_spin/frame_' + ('000'+s).slice(-4) + '.png'; spin.push(im); }
+  var lastSpin = -1;
+  function setSpin(p){
+    var idx = Math.floor((((p * 2.6) % 1) + 1) % 1 * SPIN) % SPIN;   // ~2.6 turns over the page (lively)
+    if (idx === lastSpin) return;
+    var f = spin[idx];
+    if (f && f.complete && f.naturalWidth){ mangoImg.src = f.src; lastSpin = idx; }
+  }
 
   function measureLead(){
     if (!lead) return;
     var r = lead.getBoundingClientRect();
-    start.x = r.left + r.width / 2;
-    start.y = r.top + r.height / 2;
-    mango.style.width = r.width + 'px';      // match the hero mango exactly for a seamless hand-off
+    start.x = r.left + r.width/2; start.y = r.top + r.height/2; start.w = r.width;
+    mango.style.width = (r.width * 1.05) + 'px';
   }
   measureLead();
 
   function placeMango(p){
-    var driftX = Math.sin(p * Math.PI * 2.5) * vw(16);
-    var handoff = Math.min(1, p * 1.3);
-    var cx = gsap.utils.interpolate(start.x, vw(50), handoff) + driftX;
-    var cy = gsap.utils.interpolate(start.y, vh(72), p);
-    var rot = -6 + p * 64;
-    var sc = 0.92 + Math.sin(p * Math.PI) * 0.16;
+    var inP = smooth(0.004, 0.05, p);                 // mango fades in as it lifts off
+    if (lead) lead.style.opacity = String(1 - smooth(0.004, 0.045, p));
+    var driftX = Math.sin(p * Math.PI * 4) * vw(26);  // wider, more frequent left-right swing
+    var baseX = gsap.utils.interpolate(start.x, vw(50) + driftX, Math.min(1, p * 1.25));
+    var baseY = gsap.utils.interpolate(start.y, vh(56), p);
+    var rot = -5 + Math.sin(p * Math.PI * 3) * 7;     // gentle tilt; the spin frames carry the real rotation
+    var sc  = 0.95 + Math.sin(p * Math.PI) * 0.14;
+
+    var cx = gsap.utils.interpolate(baseX, vw(89), ritualSide.v);  // pushed to the right edge during ritual
+    var cy = baseY;
+
+    if (giftBox && p > 0.86){                          // settle into the open gift box at the very end
+      var land = smooth(0.86, 0.995, p);
+      var gr = giftBox.getBoundingClientRect();
+      cx  = gsap.utils.interpolate(cx, gr.left + gr.width*0.5, land);
+      cy  = gsap.utils.interpolate(cy, gr.top + gr.height*0.30, land);
+      sc  = gsap.utils.interpolate(sc, 0.6, land);
+      rot = gsap.utils.interpolate(rot, 0, land);
+    }
+
+    setSpin(p);
     var w = mango.offsetWidth, h = mango.offsetHeight;
-    setM({ transform: 'translate(' + (cx - w/2) + 'px,' + (cy - h/2) + 'px) rotate(' + rot + 'deg) scale(' + sc + ')',
-           opacity: Math.min(1, p / 0.04) });
-    if (lead) lead.style.opacity = String(Math.max(0, 1 - p / 0.04));
+    setM({ transform:'translate('+(cx-w/2)+'px,'+(cy-h/2)+'px) rotate('+rot+'deg) scale('+sc+')', opacity: inP });
   }
   placeMango(0);
 
   ScrollTrigger.create({
     start: 0, end: 'max', scrub: true,
-    onUpdate: function (self) {
-      placeMango(self.progress);
-      var sy = self.scroll();
-      leaves.forEach(function (lf) {
+    onUpdate: function (self){
+      var p = self.progress, sy = self.scroll();
+      placeMango(p);
+      leaves.forEach(function (lf){
         var f = parseFloat(lf.getAttribute('data-leaf')) || 0.1;
-        gsap.set(lf, { y: sy * f * 0.12 });
+        var rm = parseFloat(lf.getAttribute('data-rot')) || 0;
+        gsap.set(lf, { y: sy * f * 0.15, rotation: p * rm });
       });
     }
   });
   window.addEventListener('resize', measureLead);
 
-  // gentle continuous leaf sway
-  gsap.utils.toArray('.leaf .sway').forEach(function (s, i) {
-    gsap.to(s, { rotation: i % 2 ? 5 : -5, duration: 4 + i, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  // continuous idle leaf drift (sway + float), each unique
+  gsap.utils.toArray('.leaf .sway').forEach(function (s, i){
+    gsap.to(s, { rotation: (i%2?1:-1)*(5+i*0.6), duration: 4+i*0.5, ease:'sine.inOut', yoyo:true, repeat:-1 });
+    gsap.to(s, { yPercent: (i%2?1:-1)*4, duration: 5+i*0.4, ease:'sine.inOut', yoyo:true, repeat:-1, delay:i*0.2 });
   });
 
-  /* ---------- ritual: horizontal scroll (desktop) ---------- */
+  /* ---------- ritual: horizontal scroll (desktop) + push the mango to the side ---------- */
   var track = document.getElementById('ritual-track');
   if (track && window.innerWidth >= 768) {
     var amount = function () { return track.scrollWidth - window.innerWidth + 60; };
     gsap.to(track, { x: function () { return -amount(); }, ease: 'none',
       scrollTrigger: { trigger: '#ritual', start: 'top top', end: function () { return '+=' + amount(); },
-        pin: true, scrub: 1, invalidateOnRefresh: true } });
+        pin: true, scrub: 1, invalidateOnRefresh: true,
+        onUpdate: function (self){ var p = self.progress; ritualSide.v = Math.min(1, Math.min(p/0.12, (1-p)/0.12, 1)); },
+        onLeave: function(){ ritualSide.v = 0; }, onLeaveBack: function(){ ritualSide.v = 0; } } });
   }
 
-  /* ---------- ORIGIN: scroll-scrubbed orchard fly-through (frame sequence) ---------- */
+  /* ---------- ORIGIN: fly-through + copy emerges on scroll ---------- */
   var fly = initFly();
-  if (fly) {
-    ScrollTrigger.create({ trigger: '#origin', start: 'top top', end: 'bottom bottom', scrub: true,
-      onUpdate: function (self) { fly.draw(self.progress); } });
-  }
+  var originCopy = document.getElementById('origin-copy');
+  ScrollTrigger.create({ trigger: '#origin', start: 'top top', end: 'bottom bottom', scrub: true,
+    onUpdate: function (self){
+      var p = self.progress;
+      if (fly) fly.draw(p);
+      if (originCopy){
+        var em = smooth(0.03, 0.32, p) * (1 - smooth(0.84, 1, p));
+        originCopy.style.opacity = String(em);
+        originCopy.style.transform = 'translateY(' + ((1 - smooth(0.03, 0.32, p)) * 44) + 'px)';
+      }
+    } });
 
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 })();
