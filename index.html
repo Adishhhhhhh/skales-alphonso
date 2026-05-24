@@ -415,10 +415,6 @@
         <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary !px-9 !py-[1.15rem]">DM&nbsp;@s.kales.mangoes <span class="arrow">→</span></a>
         <a href="tel:+919987967062" class="btn btn-ghost">Call 99879 67062</a>
       </div>
-      <!-- the travelling mango lands here at the end of the scroll -->
-      <div class="relative mx-auto mt-20 md:mt-24 w-[90vw] max-w-[680px]">
-        <img id="gift-landing" src="brand_assets/gift-open.png" alt="An open gift box of Alphonso mangoes tied with a purple ribbon" class="w-full" style="filter:drop-shadow(0 44px 64px rgba(0,0,0,.72));" />
-      </div>
     </div>
   </section>
 
@@ -520,7 +516,7 @@
   var mTarget = null, mCur = null;
 
   // pre-decode spin frames into bitmaps for buttery rotation
-  var SPIN = 49, bmp = new Array(SPIN), FW = 326, FH = 342;
+  var SPIN = 91, bmp = new Array(SPIN), FW = 325, FH = 336;
   canvas.width = 600; canvas.height = Math.round(600 * FH / FW);
   function drawSpin(idx){
     var b = bmp[idx];
@@ -544,7 +540,7 @@
     if (!lead) return;
     var r = lead.getBoundingClientRect();
     start.x = r.left + r.width/2; start.y = r.top + r.height/2; start.w = r.width;
-    mango.style.width = r.width + 'px';     // match the hero mango for a seamless hand-off (scale grows it later)
+    mango.style.width = (r.width * 1.3) + 'px';   // bigger than the hero mango; scale grows it further mid-journey
   }
   measureLead();
 
@@ -554,26 +550,17 @@
     pCur += (pTarget - pCur) * 0.10;
     var p = pCur;
     if (lead) lead.style.opacity = String(1 - smooth(0.006, 0.05, pTarget));
-    var swing = (1 - ritualSide.v) * (1 - landP.v);             // calm the swing during ritual + landing
     var phase = p * Math.PI * 2.2;                              // slow, broad swing (not frantic)
-    var driftX = Math.sin(phase) * vw(30) * swing;             // big left-right magnitude, centred
-    var baseX = gsap.utils.interpolate(start.x, vw(50), Math.min(1, p * 1.3)) + driftX;
-    var cx = gsap.utils.interpolate(baseX, vw(82), ritualSide.v);
+    var driftX = Math.sin(phase) * vw(30);                      // big left-right magnitude, centred
+    var cx = gsap.utils.interpolate(start.x, vw(50), Math.min(1, p * 1.3)) + driftX;
     var cy = gsap.utils.interpolate(start.y, vh(54), p);
-    var tilt = Math.cos(phase) * 17 * swing + Math.sin(p*Math.PI*1.3) * 4;  // leans INTO the glide while it spins
-    var sc = 1.0 + Math.sin(Math.min(1,p) * Math.PI) * 0.5;
-
-    if (giftBox && landP.v > 0.001){                            // settle into the box's empty straw spot, sized to match
-      var land = landP.v, gr = giftBox.getBoundingClientRect();
-      cx = gsap.utils.interpolate(cx, gr.left + gr.width*0.30, land);
-      cy = gsap.utils.interpolate(cy, gr.top + gr.height*0.44, land);
-      sc = gsap.utils.interpolate(sc, (gr.width*0.20)/Math.max(1, mango.offsetWidth), land);
-      tilt = gsap.utils.interpolate(tilt, -4, land);
-    }
+    var tilt = Math.cos(phase) * 17 + Math.sin(p*Math.PI*1.3) * 4; // leans INTO the glide while it spins
+    var sc = 1.05 + Math.sin(Math.min(1,p) * Math.PI) * 0.65;
 
     setSpin(p);
     var w = mango.offsetWidth, h = mango.offsetHeight;
-    setM({ transform:'translate('+(cx-w/2)+'px,'+(cy-h/2)+'px) rotate('+tilt+'deg) scale('+sc+')', opacity: smooth(0.006,0.06,pTarget) });
+    var op = smooth(0.006, 0.06, pTarget) * (1 - smooth(0.95, 1.0, pTarget));   // fade in on lift-off, fade out at the very end
+    setM({ transform:'translate('+(cx-w/2)+'px,'+(cy-h/2)+'px) rotate('+tilt+'deg) scale('+sc+')', opacity: op });
   }
   gsap.ticker.add(renderMango);
 
@@ -608,21 +595,13 @@
     });
   }
 
-  /* ---------- ritual: horizontal scroll (desktop) + push the mango to the side ---------- */
+  /* ---------- ritual: horizontal scroll (desktop); mango glides through naturally ---------- */
   var track = document.getElementById('ritual-track');
   if (track && window.innerWidth >= 768) {
     var amount = function () { return track.scrollWidth - window.innerWidth + 60; };
     gsap.to(track, { x: function () { return -amount(); }, ease: 'none',
       scrollTrigger: { trigger: '#ritual', start: 'top top', end: function () { return '+=' + amount(); },
-        pin: true, scrub: 1, invalidateOnRefresh: true,
-        onUpdate: function (self){ var p = self.progress; ritualSide.v = Math.min(smooth(0,0.32,p), smooth(0,0.32,1-p)); },
-        onLeave: function(){ ritualSide.v = 0; }, onLeaveBack: function(){ ritualSide.v = 0; } } });
-  }
-
-  /* ---------- gift-box landing: mango glues into the box as it centres ---------- */
-  if (giftBox){
-    ScrollTrigger.create({ trigger: giftBox, start: 'top 78%', end: 'center 56%',
-      onUpdate: function (self){ landP.v = self.progress; } });
+        pin: true, scrub: 1, invalidateOnRefresh: true } });
   }
 
   /* ---------- ORIGIN: fly-through + copy emerges on scroll ---------- */
