@@ -84,7 +84,7 @@
     background:radial-gradient(120% 90% at 50% 35%, transparent 55%, rgba(0,0,0,.55) 100%); }
 
   /* side leaves (parallax layers) */
-  .leaf{ position:fixed; z-index:3; width:clamp(120px,15vw,250px); opacity:.62; pointer-events:none; will-change:transform; }
+  .leaf{ position:fixed; z-index:3; width:clamp(155px,18vw,320px); opacity:.66; pointer-events:none; will-change:transform; }
   .leaf .sway{ display:block; transform-origin:50% 0%; will-change:transform; }
   .leaf img{ display:block; width:100%; filter:saturate(1.18) brightness(1.06) drop-shadow(0 16px 22px rgba(0,0,0,.45)); }
 
@@ -154,9 +154,9 @@
 <main id="top">
 
   <!-- 1 · HERO -->
-  <section id="hero" class="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 md:px-10 pt-24 pb-24 overflow-hidden">
+  <section id="hero" class="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 md:px-10 pt-20 pb-32 overflow-hidden">
     <!-- trio (top-centre): #hero-lead lifts off on scroll into the travelling mango -->
-    <div id="hero-cluster" class="relative pointer-events-none w-[74vw] max-w-[290px] md:max-w-[380px] aspect-[6/5] mb-3 md:mb-5" aria-hidden="true">
+    <div id="hero-cluster" class="relative pointer-events-none w-[64vw] max-w-[250px] md:max-w-[320px] aspect-[6/5] mb-2 md:mb-3" aria-hidden="true">
       <img src="brand_assets/ribbon.png" class="absolute w-[42%] right-[-5%] top-[-16%] rotate-[10deg]" style="filter:drop-shadow(0 14px 20px rgba(0,0,0,.5));" alt="" />
       <img src="brand_assets/mango.png" class="absolute w-[38%] left-[3%] top-[20%] -rotate-[15deg]" style="filter:drop-shadow(0 24px 30px rgba(0,0,0,.6));" alt="" />
       <img src="brand_assets/mango-2.png" class="absolute w-[48%] right-[1%] top-[6%] rotate-[8deg]" style="filter:drop-shadow(0 24px 30px rgba(0,0,0,.6));" alt="" />
@@ -171,9 +171,9 @@
       <a href="https://instagram.com/s.kales.mangoes" target="_blank" rel="noopener" class="btn btn-primary">Reserve Your Box <span class="arrow">→</span></a>
       <a href="#origin" class="btn btn-ghost">The Story</a>
     </div>
-    <a href="#manifesto" class="absolute bottom-7 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-3 text-cream/50 hover:text-gold transition-colors" aria-label="Scroll down">
+    <a href="#manifesto" class="absolute bottom-4 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-cream/45 hover:text-gold transition-colors" aria-label="Scroll down">
       <span class="eyebrow !text-current before:!hidden !tracking-[.3em]">The season is short</span>
-      <span class="w-[1px] h-12 bg-gradient-to-b from-gold/60 to-transparent animate-pulse"></span>
+      <span class="w-[1px] h-8 bg-gradient-to-b from-gold/60 to-transparent animate-pulse"></span>
     </a>
   </section>
 
@@ -416,7 +416,7 @@
         <a href="tel:+919987967062" class="btn btn-ghost">Call 99879 67062</a>
       </div>
       <!-- the travelling mango lands here at the end of the scroll -->
-      <div class="relative mx-auto mt-20 md:mt-24 w-[88vw] max-w-[600px]">
+      <div class="relative mx-auto mt-20 md:mt-24 w-[90vw] max-w-[680px]">
         <img id="gift-landing" src="brand_assets/gift-open.png" alt="An open gift box of Alphonso mangoes tied with a purple ribbon" class="w-full" style="filter:drop-shadow(0 44px 64px rgba(0,0,0,.72));" />
       </div>
     </div>
@@ -536,7 +536,7 @@
   })(s); }
   var lastSpin = -1;
   function setSpin(p){
-    var idx = Math.floor((((p * 2.4) % 1) + 1) % 1 * SPIN) % SPIN;   // ~2.4 smooth turns over the page
+    var idx = Math.floor((((p * 2.2) % 1) + 1) % 1 * SPIN) % SPIN;   // ~2.2 turns over the page
     if (idx === lastSpin) return; lastSpin = idx; drawSpin(idx);
   }
 
@@ -548,55 +548,44 @@
   }
   measureLead();
 
-  function placeMango(p){
-    var inP = smooth(0.006, 0.06, p);
-    if (lead) lead.style.opacity = String(1 - smooth(0.006, 0.05, p));
-    var driftX = Math.sin(p * Math.PI * 4) * vw(27);                 // wide left-right swing
-    var baseX = gsap.utils.interpolate(start.x, vw(50) + driftX, Math.min(1, p * 1.2));
-    var baseY = gsap.utils.interpolate(start.y, vh(55), p);
-    var rot   = Math.sin(p * Math.PI * 3) * 10;                      // left-right axis tilt while spinning
-    var sc    = 1.0 + Math.sin(p * Math.PI) * 0.5;                   // grows big mid-journey, settles at the ends
+  // ONE eased progress drives position + rotation + tilt together -> everything smooth, big swing intact
+  var pCur = 0, pTarget = 0;
+  function renderMango(){
+    pCur += (pTarget - pCur) * 0.10;
+    var p = pCur;
+    if (lead) lead.style.opacity = String(1 - smooth(0.006, 0.05, pTarget));
+    var swing = (1 - ritualSide.v) * (1 - landP.v);             // calm the swing during ritual + landing
+    var phase = p * Math.PI * 2.2;                              // slow, broad swing (not frantic)
+    var driftX = Math.sin(phase) * vw(30) * swing;             // big left-right magnitude, centred
+    var baseX = gsap.utils.interpolate(start.x, vw(50), Math.min(1, p * 1.3)) + driftX;
+    var cx = gsap.utils.interpolate(baseX, vw(82), ritualSide.v);
+    var cy = gsap.utils.interpolate(start.y, vh(54), p);
+    var tilt = Math.cos(phase) * 17 * swing + Math.sin(p*Math.PI*1.3) * 4;  // leans INTO the glide while it spins
+    var sc = 1.0 + Math.sin(Math.min(1,p) * Math.PI) * 0.5;
 
-    var cx = gsap.utils.interpolate(baseX, vw(83), ritualSide.v);    // eased aside during ritual
-    var cy = baseY;
-
-    if (giftBox && landP.v > 0.001){                                 // glue into the open box's straw opening
-      var land = landP.v;
-      var gr = giftBox.getBoundingClientRect();
-      cx  = gsap.utils.interpolate(cx, gr.left + gr.width*0.33, land);
-      cy  = gsap.utils.interpolate(cy, gr.top + gr.height*0.20, land);
-      sc  = gsap.utils.interpolate(sc, (gr.width * 0.22) / Math.max(1, mango.offsetWidth), land);
-      rot = gsap.utils.interpolate(rot, 0, land);
+    if (giftBox && landP.v > 0.001){                            // settle into the box's empty straw spot, sized to match
+      var land = landP.v, gr = giftBox.getBoundingClientRect();
+      cx = gsap.utils.interpolate(cx, gr.left + gr.width*0.30, land);
+      cy = gsap.utils.interpolate(cy, gr.top + gr.height*0.44, land);
+      sc = gsap.utils.interpolate(sc, (gr.width*0.20)/Math.max(1, mango.offsetWidth), land);
+      tilt = gsap.utils.interpolate(tilt, -4, land);
     }
 
     setSpin(p);
-    mTarget = { x: cx, y: cy, sc: sc, rot: rot, op: inP };     // store target; the ticker eases toward it
-    if (!mCur) mCur = { x: cx, y: cy, sc: sc, rot: rot, op: inP };
-  }
-  placeMango(0);
-
-  // ease the mango toward its scroll-target every frame -> buttery glide, no snaps at the ritual or anywhere
-  gsap.ticker.add(function(){
-    if (!mTarget || !mCur) return;
-    var k = 0.13;
-    mCur.x += (mTarget.x - mCur.x) * k;
-    mCur.y += (mTarget.y - mCur.y) * k;
-    mCur.sc += (mTarget.sc - mCur.sc) * k;
-    mCur.rot += (mTarget.rot - mCur.rot) * k;
-    mCur.op += (mTarget.op - mCur.op) * k;
     var w = mango.offsetWidth, h = mango.offsetHeight;
-    setM({ transform:'translate('+(mCur.x - w/2)+'px,'+(mCur.y - h/2)+'px) rotate('+mCur.rot+'deg) scale('+mCur.sc+')', opacity: mCur.op });
-  });
+    setM({ transform:'translate('+(cx-w/2)+'px,'+(cy-h/2)+'px) rotate('+tilt+'deg) scale('+sc+')', opacity: smooth(0.006,0.06,pTarget) });
+  }
+  gsap.ticker.add(renderMango);
 
   ScrollTrigger.create({
     start: 0, end: 'max', scrub: true,
     onUpdate: function (self){
-      var p = self.progress, sy = self.scroll();
-      placeMango(p);
+      pTarget = self.progress;
+      var sy = self.scroll(), p = self.progress;
       leaves.forEach(function (lf){
         var f = parseFloat(lf.getAttribute('data-leaf')) || 0.1;
         var rm = parseFloat(lf.getAttribute('data-rot')) || 0;
-        gsap.set(lf, { y: sy * f * 0.15, rotation: p * rm });
+        gsap.set(lf, { y: sy * f * 0.22, rotation: p * rm });   // stronger scroll drift
       });
     }
   });
@@ -604,9 +593,20 @@
 
   // continuous idle leaf drift (sway + float), each unique
   gsap.utils.toArray('.leaf .sway').forEach(function (s, i){
-    gsap.to(s, { rotation: (i%2?1:-1)*(5+i*0.6), duration: 4+i*0.5, ease:'sine.inOut', yoyo:true, repeat:-1 });
-    gsap.to(s, { yPercent: (i%2?1:-1)*4, duration: 5+i*0.4, ease:'sine.inOut', yoyo:true, repeat:-1, delay:i*0.2 });
+    gsap.to(s, { rotation: (i%2?1:-1)*(7+i*0.8), duration: 4+i*0.5, ease:'sine.inOut', yoyo:true, repeat:-1 });
+    gsap.to(s, { yPercent: (i%2?1:-1)*7, duration: 5+i*0.4, ease:'sine.inOut', yoyo:true, repeat:-1, delay:i*0.2 });
   });
+
+  // interactive cursor parallax for the leaves (desktop)
+  if (window.matchMedia('(hover:hover)').matches){
+    var swayEls = gsap.utils.toArray('.leaf .sway');
+    var qx = swayEls.map(function(s){ return gsap.quickTo(s, 'x', { duration:0.9, ease:'power3' }); });
+    var qy = swayEls.map(function(s){ return gsap.quickTo(s, 'y', { duration:0.9, ease:'power3' }); });
+    window.addEventListener('mousemove', function(e){
+      var nx = (e.clientX/window.innerWidth - 0.5) * 2, ny = (e.clientY/window.innerHeight - 0.5) * 2;
+      swayEls.forEach(function(s, i){ var d = 18 + (i % 3) * 12; qx[i](-nx * d); qy[i](-ny * d); });
+    });
+  }
 
   /* ---------- ritual: horizontal scroll (desktop) + push the mango to the side ---------- */
   var track = document.getElementById('ritual-track');
